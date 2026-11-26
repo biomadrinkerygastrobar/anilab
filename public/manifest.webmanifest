@@ -1,0 +1,12 @@
+{
+  "name": "ANILAB — Banco de Sangue Veterinário",
+  "short_name": "ANILAB",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4F7FA",
+  "theme_color": "#183C60",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "img/anilab.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

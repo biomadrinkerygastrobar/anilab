@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#183C60">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ANILAB — Banco de Sangue</title>
+  <link rel="icon" href="img/anilab.png">
+  <link rel="apple-touch-icon" href="img/anilab.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ANILAB">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- RASTREIO PÚBLICO (aberto pelo QR da etiqueta, sem login) -->
+  <noscript><p style="padding:30px;font-family:sans-serif">O ANILAB precisa de JavaScript. Abra no navegador (Chrome ou Safari), não dentro do WhatsApp ou de um visualizador de arquivos.</p></noscript>
+  <main id="trace" class="trace hidden"></main>
+
+  <!-- LOGIN -->
+  <main id="login" class="login hidden">
+    <form id="loginForm" class="card login-card" autocomplete="on" novalidate>
+      <img src="img/anilab.png" alt="ANILAB" class="login-logo">
+      <p class="muted center">Banco de sangue veterinário — ANILAB</p>
+      <label>E-mail<input type="email" id="lEmail" required maxlength="120" autocomplete="username"></label>
+      <label>Senha<input type="password" id="lPass" required minlength="8" maxlength="72" autocomplete="current-password"></label>
+      <!-- armadilha para bots (item 12): humanos não veem nem preenchem -->
+      <input type="text" id="lWebsite" name="website" tabindex="-1" autocomplete="off" class="trap" aria-hidden="true">
+      <button class="btn primary block" type="submit">Entrar</button>
+      <p id="loginMsg" class="msg" role="alert"></p>
+    </form>
+  </main>
+
+  <!-- APP -->
+  <div id="app" class="app hidden">
+    <aside class="side">
+      <img src="img/anilab.png" alt="ANILAB" class="side-logo">
+      <nav id="nav">
+        <button data-view="painel" class="active"><span>▦</span><b>Painel</b></button>
+        <button data-view="tipagem"><span>◉</span><b>Tipagem</b></button>
+        <button data-view="compat"><span>⇄</span><b>Compatib.</b></button>
+        <button data-view="pedidos"><span>✎</span><b>Pedidos</b></button>
+        <button data-view="entradas"><span>⬇</span><b>Entradas</b></button>
+        <button data-view="saidas"><span>⬆</span><b>Saídas</b></button>
+        <button data-view="cadastros"><span>⌂</span><b>Cadastros</b></button>
+        <button data-view="historico"><span>☰</span><b>Laudos</b></button>
+        <button data-view="config"><span>⚙</span><b>Ajustes</b></button>
+      </nav>
+      <button id="logout" class="btn ghost small side-logout">Sair</button>
+    </aside>
+    <main id="view" class="view" tabindex="-1"></main>
+  </div>
+
+  <!-- PRÉ-VISUALIZAÇÃO DE ETIQUETAS -->
+  <div id="pv" class="pv hidden" role="dialog" aria-modal="true" aria-labelledby="pvTitle">
+    <div class="pv-box">
+      <div class="pv-head"><h2 id="pvTitle">Pré-visualização</h2><button id="pvClose" class="btn ghost small" type="button">Fechar</button></div>
+      <iframe id="pvFrame" title="Pré-visualização do PDF"></iframe>
+      <div id="pvNo" class="pv-no hidden"><b>Este aparelho não mostra PDF dentro do sistema.</b><span>Toque em <b>Abrir em nova aba</b> para ver a etiqueta, ou em <b>Compartilhar</b> para enviá-la ao aplicativo da etiquetadora.</span></div>
+      <p class="muted pv-hint">Na impressão, escolha o tamanho do papel da etiqueta e a escala <b>100% / tamanho real</b>.</p>
+      <div class="pv-actions">
+        <button id="pvPrint" class="btn primary" type="button">Imprimir</button>
+        <button id="pvShare" class="btn gold hidden" type="button">Compartilhar</button>
+        <button id="pvSave" class="btn gold" type="button">Baixar PDF</button>
+        <button id="pvOpen" class="btn ghost" type="button">Abrir em nova aba</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO DE ALTERAÇÕES -->
+  <div id="hm" class="pv hidden" role="dialog" aria-modal="true" aria-labelledby="hmTitle">
+    <div class="pv-box">
+      <div class="pv-head"><h2 id="hmTitle">Histórico</h2><button id="hmClose" class="btn ghost small" type="button">Fechar</button></div>
+      <div id="hmBody" class="hm-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="js/boot.js"></script>
+  <script src="js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" crossorigin="anonymous"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/qr.js"></script>
+  <script src="js/code128.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
